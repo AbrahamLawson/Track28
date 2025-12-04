@@ -1,0 +1,53 @@
+# Laravel
+*.log
+.env
+.env.backup
+.env.production
+.phpunit.result.cache
+/auth.json
+/public/build
+/public/hot
+/public/storage
+/storage/*.key
+/storage/pail
+/vendor
+Homestead.json
+Homestead.yaml
+
+# IDE & Editors
+/.fleet
+/.idea
+/.nova
+/.phpunit.cache
+/.vscode
+/.zed
+.phpactor.json
+
+# Node / NPM
+/node_modules
+npm-debug.log
+yarn-error.log
+
+# Database
+/database/database.sqlite
+/database/*.sqlite
+/database/*.sqlite-journal
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# Laravel Cache & Temp
+/bootstrap/cache/*
+!/bootstrap/cache/.gitkeep
+/storage/framework/cache/*
+!/storage/framework/cache/.gitkeep
+/storage/framework/sessions/*
+!/storage/framework/sessions/.gitkeep
+/storage/framework/views/*
+!/storage/framework/views/.gitkeep
+/storage/logs/*
+!/storage/logs/.gitkeep
+
+# Test files
+/test-scraper.php
