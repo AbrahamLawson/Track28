@@ -1,0 +1,54 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# IDE
+.idea
+.vscode
+.fleet
+.phpactor.json
+
+# Node
+node_modules
+npm-debug.log
+yarn-error.log
+
+# Vendor
+/vendor
+
+# Laravel
+.env
+.env.backup
+.env.production
+Homestead.json
+Homestead.yaml
+storage/*.key
+.phpunit.result.cache
+
+# Build files
+/public/hot
+/public/build
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Database
+/database/*.sqlite
+/database/*.sqlite-journal
+
+# Tests
+/tests
+phpunit.xml
+.phpunit.cache
+
+# Documentation
+README.md
+CLAUDE.md
+
+# Test files
+test-scraper.php
