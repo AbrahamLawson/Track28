@@ -1,5 +1,5 @@
-# Utiliser PHP 8.2 avec FPM
-FROM php:8.2-fpm
+# Utiliser PHP 8.4 avec FPM
+FROM php:8.4-fpm
 
 # Installer les dépendances système
 RUN apt-get update && apt-get install -y \
