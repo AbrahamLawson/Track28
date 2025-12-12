@@ -45,6 +45,10 @@ RUN composer dump-autoload --optimize
 # Build des assets avec Vite
 RUN npm run build
 
+# Créer le dossier pour Let's Encrypt
+RUN mkdir -p /var/www/public/.well-known/acme-challenge \
+    && chown -R www-data:www-data /var/www/public/.well-known
+
 # Configurer les permissions
 RUN chown -R www-data:www-data /var/www \
     && chmod -R 755 /var/www/storage \

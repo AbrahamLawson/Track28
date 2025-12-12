@@ -1,22 +1,22 @@
 <template>
-    <div class="competitor-analyzer min-h-screen overflow-x-hidden py-12 relative">
+    <div class="competitor-analyzer min-h-screen py-12 relative overflow-hidden">
         <!-- Vertical gradient from white to Track28 colors -->
-        <div class="absolute inset-0 bg-gradient-to-b from-white via-indigo-50 to-purple-100"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-white via-indigo-50 to-purple-100 -z-10"></div>
         
         <!-- Enhanced gradient overlay for smoother transition -->
-        <div class="absolute inset-0">
+        <div class="absolute inset-0 -z-10">
             <div class="absolute inset-0 bg-gradient-to-b from-transparent via-indigo-100/40 to-purple-200/60"></div>
         </div>
         
         <!-- Elegant floating orbs following the gradient -->
-        <div class="absolute inset-0 pointer-events-none overflow-hidden opacity-50">
+        <div class="absolute inset-0 pointer-events-none overflow-hidden opacity-50 -z-10">
             <div class="absolute top-20 right-20 w-[500px] h-[500px] bg-gradient-to-br from-indigo-300/30 to-purple-300/30 rounded-full blur-3xl"></div>
             <div class="absolute bottom-10 left-20 w-[600px] h-[600px] bg-gradient-to-tr from-purple-400/40 to-indigo-400/40 rounded-full blur-3xl"></div>
             <div class="absolute bottom-1/4 right-1/3 w-[400px] h-[400px] bg-gradient-to-tl from-violet-300/30 to-indigo-300/30 rounded-full blur-3xl"></div>
         </div>
         
         <!-- Animated subtle shimmer -->
-        <div class="absolute inset-0 pointer-events-none opacity-15">
+        <div class="absolute inset-0 pointer-events-none opacity-15 -z-10">
             <div class="absolute inset-0 bg-gradient-to-r from-transparent via-indigo-300/30 to-transparent animate-pulse"></div>
         </div>
         
@@ -74,9 +74,9 @@
                 <!-- TV Effect Container -->
                 <div class="relative">
                     <!-- TV Frame -->
-                    <div class="relative bg-gradient-to-br from-gray-900 via-black to-gray-900 p-6 rounded-3xl shadow-2xl border-4 border-gray-800">
+                    <div class="relative bg-gradient-to-br from-gray-900 via-black to-gray-900 p-5 rounded-2xl shadow-2xl border-3 border-gray-800">
                         <!-- Screen with blur background -->
-                        <div class="relative h-56 w-72 bg-black rounded-xl overflow-hidden backdrop-blur-xl">
+                        <div class="relative h-44 w-60 bg-black rounded-xl overflow-hidden backdrop-blur-xl">
                             <!-- Scan lines effect overlay -->
                             <div class="absolute inset-0 z-10 pointer-events-none opacity-20" style="background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.05) 2px, rgba(255,255,255,0.05) 4px);"></div>
                             <!-- Screen glow effect -->
@@ -91,7 +91,7 @@
                             />
                         </div>
                         <!-- TV Stand -->
-                        <div class="absolute -bottom-3 left-1/2 transform -translate-x-1/2 w-20 h-3 bg-gradient-to-b from-gray-800 to-gray-900 rounded-b-lg"></div>
+                        <div class="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-16 h-2 bg-gradient-to-b from-gray-800 to-gray-900 rounded-b-lg"></div>
                     </div>
                     <!-- Outer glow -->
                     <div class="absolute inset-0 bg-white/10 blur-2xl -z-10"></div>
