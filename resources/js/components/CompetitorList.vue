@@ -1,7 +1,7 @@
 <template>
     <div v-if="competitors.length > 0" class="space-y-4">
         <div class="flex justify-between items-center mb-6">
-            <h2 class="text-2xl font-semibold text-gray-800">
+            <h2 class="text-2xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600">
                 {{ competitors.length }} concurrent{{ competitors.length !== 1 ? 's' : '' }} trouvé{{ competitors.length !== 1 ? 's' : '' }}
             </h2>
             <button
@@ -43,7 +43,8 @@
         <div
             v-for="(competitor, index) in competitors"
             :key="index"
-            class="bg-white rounded-xl border border-gray-200 shadow-lg p-6 transition-all hover:shadow-xl"
+            class="rounded-xl border border-gray-300 shadow-lg p-6 transition-all hover:shadow-xl"
+            style="background-color: #FAF7F2;"
         >
             <div class="flex justify-between items-start mb-4">
                 <div class="flex-1">

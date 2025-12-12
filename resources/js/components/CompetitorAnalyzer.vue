@@ -1,13 +1,41 @@
 <template>
-    <div class="competitor-analyzer min-h-screen overflow-x-hidden py-12">
-        <div class="max-w-4xl w-full mx-auto px-6">
-            <h1 class="text-3xl font-bold mb-2 text-gray-800 text-center">
+    <div class="competitor-analyzer min-h-screen overflow-x-hidden py-12 relative">
+        <!-- Vertical gradient from white to Track28 colors -->
+        <div class="absolute inset-0 bg-gradient-to-b from-white via-indigo-50 to-purple-100"></div>
+        
+        <!-- Enhanced gradient overlay for smoother transition -->
+        <div class="absolute inset-0">
+            <div class="absolute inset-0 bg-gradient-to-b from-transparent via-indigo-100/40 to-purple-200/60"></div>
+        </div>
+        
+        <!-- Elegant floating orbs following the gradient -->
+        <div class="absolute inset-0 pointer-events-none overflow-hidden opacity-50">
+            <div class="absolute top-20 right-20 w-[500px] h-[500px] bg-gradient-to-br from-indigo-300/30 to-purple-300/30 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-10 left-20 w-[600px] h-[600px] bg-gradient-to-tr from-purple-400/40 to-indigo-400/40 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-1/4 right-1/3 w-[400px] h-[400px] bg-gradient-to-tl from-violet-300/30 to-indigo-300/30 rounded-full blur-3xl"></div>
+        </div>
+        
+        <!-- Animated subtle shimmer -->
+        <div class="absolute inset-0 pointer-events-none opacity-15">
+            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-indigo-300/30 to-transparent animate-pulse"></div>
+        </div>
+        
+        <!-- Background Brand Logos -->
+        <BrandLogos />
+
+        <!-- Logo Track28 en haut à gauche -->
+        <div class="fixed top-6 left-6 z-20">
+            <img :src="logoUrl" alt="Track28 Logo" class="h-12" />
+        </div>
+
+        <div class="max-w-4xl w-full mx-auto px-6 relative z-10">
+            <h1 class="text-4xl font-bold mb-3 text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 text-center">
                 Competitor Analysis Tool
             </h1>
-            <p class="text-gray-600 mb-8 text-center">Découvrez vos concurrents en quelques secondes</p>
+            <p class="text-gray-600 mb-10 text-center text-lg">Découvrez vos concurrents en quelques secondes</p>
 
             <!-- Search Form -->
-            <div class="bg-white rounded-xl shadow-lg border border-gray-200 p-6 mb-8">
+            <div class="rounded-xl shadow-lg border border-gray-300 p-6 mb-8" style="background-color: #FAF7F2;">
                 <div class="mb-4">
                     <label for="targetUrl" class="block text-sm font-medium text-gray-700 mb-2">
                         URL du produit ou de la boutique
@@ -27,23 +55,55 @@
                     <button
                         @click="analyzeCompetitors"
                         :disabled="isLoading || !targetUrl"
-                        class="flex-1 bg-blue-600 text-white px-6 py-3 rounded-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:bg-blue-700"
+                        class="flex-1 bg-blue-600 text-white px-6 py-3 rounded-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-all hover:bg-blue-700"
                     >
                         {{ isLoading ? 'Analyse en cours...' : 'Analyser les concurrents' }}
                     </button>
                     <button
                         v-if="competitors.length > 0"
                         @click="resetAnalysis"
-                        class="px-6 py-3 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 transition-all"
+                        class="px-6 py-3 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 cursor-pointer transition-all"
                     >
                         Réinitialiser
                     </button>
                 </div>
             </div>
 
-            <!-- Loading Spinner -->
-            <div v-if="isLoading" class="flex justify-center items-center py-12">
-                <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+            <!-- Loading Cat GIF with Dynamic Messages -->
+            <div v-if="isLoading" class="flex flex-col items-center justify-center py-12 space-y-6">
+                <!-- TV Effect Container -->
+                <div class="relative">
+                    <!-- TV Frame -->
+                    <div class="relative bg-gradient-to-br from-gray-900 via-black to-gray-900 p-6 rounded-3xl shadow-2xl border-4 border-gray-800">
+                        <!-- Screen with blur background -->
+                        <div class="relative h-56 w-72 bg-black rounded-xl overflow-hidden backdrop-blur-xl">
+                            <!-- Scan lines effect overlay -->
+                            <div class="absolute inset-0 z-10 pointer-events-none opacity-20" style="background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.05) 2px, rgba(255,255,255,0.05) 4px);"></div>
+                            <!-- Screen glow effect -->
+                            <div class="absolute inset-0 z-0 bg-gradient-radial from-gray-200/20 via-transparent to-transparent blur-xl"></div>
+                            <!-- GIF -->
+                            <img 
+                                :src="randomCatGif" 
+                                alt="Loading cat" 
+                                class="relative z-5 h-full w-full object-contain"
+                                @error="handleImageError"
+                                @load="handleImageLoad"
+                            />
+                        </div>
+                        <!-- TV Stand -->
+                        <div class="absolute -bottom-3 left-1/2 transform -translate-x-1/2 w-20 h-3 bg-gradient-to-b from-gray-800 to-gray-900 rounded-b-lg"></div>
+                    </div>
+                    <!-- Outer glow -->
+                    <div class="absolute inset-0 bg-white/10 blur-2xl -z-10"></div>
+                </div>
+                <div class="text-center">
+                    <p class="text-xl font-semibold text-gray-800 animate-pulse">
+                        {{ currentMessage }}
+                    </p>
+                    <p class="text-sm text-gray-500 mt-2">
+                        Cela peut prendre quelques instants...
+                    </p>
+                </div>
             </div>
 
             <!-- Error Message -->
@@ -62,8 +122,38 @@
 </template>
 
 <script setup>
+import { watch, ref, onMounted } from 'vue';
 import { useCompetitorAnalysis } from '../composables/useCompetitorAnalysis';
+import { useLoadingMessages } from '../composables/useLoadingMessages';
 import CompetitorList from './CompetitorList.vue';
+import BrandLogos from './BrandLogos.vue';
+
+const logoUrl = '/images/logos/track28-logo.svg';
+
+// Liste des GIFs de chat disponibles
+const catGifNames = [
+    'cat-cat-tongue.gif',
+    'cat-dance.gif',
+    'cat-kung-fu.gif',
+    'cat-pringles.gif',
+    'cat-weird-cat-gif.gif'
+];
+
+const catGifs = catGifNames.map(name => `${window.location.origin}/images/logos/${name}`);
+
+// GIF de chat sélectionné
+const randomCatGif = ref(catGifs[0]);
+
+// Précharger tous les GIFs au montage
+onMounted(() => {
+    console.log('Préchargement des GIFs de chat...');
+    catGifs.forEach(gifUrl => {
+        const img = new Image();
+        img.src = gifUrl;
+        img.onload = () => console.log('GIF préchargé:', gifUrl);
+        img.onerror = () => console.error('Erreur préchargement:', gifUrl);
+    });
+});
 
 const {
     competitors,
@@ -73,4 +163,41 @@ const {
     analyzeCompetitors,
     resetAnalysis
 } = useCompetitorAnalysis();
+
+const { currentMessage, startRotation, stopRotation } = useLoadingMessages();
+
+// Debug pour les images
+const handleImageError = (event) => {
+    console.error('Erreur de chargement du GIF:', randomCatGif.value);
+    console.error('Event:', event);
+};
+
+const handleImageLoad = () => {
+    console.log('GIF chargé avec succès:', randomCatGif.value);
+};
+
+// Gérer la rotation des messages pendant le chargement
+watch(isLoading, (newValue) => {
+    if (newValue) {
+        // Sélectionner un nouveau GIF aléatoire
+        const randomIndex = Math.floor(Math.random() * catGifs.length);
+        randomCatGif.value = catGifs[randomIndex];
+        console.log('Loading started, GIF selected:', randomCatGif.value);
+        startRotation();
+    } else {
+        stopRotation();
+    }
+});
+
+// Masquer les animations rainbow quand des résultats sont affichés
+watch(competitors, (newCompetitors) => {
+    const rainbowContainer = document.getElementById('rainbow-container');
+    if (rainbowContainer) {
+        if (newCompetitors.length > 0) {
+            rainbowContainer.classList.add('hide-rainbows');
+        } else {
+            rainbowContainer.classList.remove('hide-rainbows');
+        }
+    }
+}, { immediate: true });
 </script>

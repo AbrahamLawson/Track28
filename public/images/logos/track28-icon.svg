@@ -1,0 +1,20 @@
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="gradient-icon" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6366f1;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Fond rond -->
+  <circle cx="32" cy="32" r="30" fill="url(#gradient-icon)"/>
+  
+  <!-- Icône de piste stylisée -->
+  <path d="M 15 32 Q 24 20, 32 32 T 49 32" stroke="white" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <circle cx="49" cy="32" r="5" fill="white"/>
+  
+  <!-- Chiffre 28 -->
+  <text x="32" y="50" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="white" text-anchor="middle">
+    28
+  </text>
+</svg>

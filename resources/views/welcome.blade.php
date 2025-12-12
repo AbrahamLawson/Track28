@@ -5,7 +5,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>Competitor Analysis Tool</title>
+        <title>Track28 - Competitor Analysis Tool</title>
+
+        <!-- Favicon -->
+        <link rel="icon" type="image/svg+xml" href="/images/logos/track28-icon.svg">
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -26,33 +29,35 @@
     </head>
     <body class="min-h-screen cyber-background">
         <!-- Rainbow Animation Background -->
-        <div class="rainbow"></div>
-        <div class="rainbow"></div>
-        <div class="rainbow"></div>
-        <div class="rainbow"></div>
-        <div class="rainbow"></div>
-        <div class="rainbow"></div>
-        <div class="rainbow"></div>
-        <div class="rainbow"></div>
-        <div class="rainbow"></div>
-        <div class="rainbow"></div>
-        <div class="rainbow"></div>
-        <div class="rainbow"></div>
-        <div class="rainbow"></div>
-        <div class="rainbow"></div>
-        <div class="rainbow"></div>
-        <div class="rainbow"></div>
-        <div class="rainbow"></div>
-        <div class="rainbow"></div>
-        <div class="rainbow"></div>
-        <div class="rainbow"></div>
-        <div class="rainbow"></div>
-        <div class="rainbow"></div>
-        <div class="rainbow"></div>
-        <div class="rainbow"></div>
-        <div class="rainbow"></div>
-        <div class="h"></div>
-        <div class="v"></div>
+        <div id="rainbow-container">
+            <div class="rainbow"></div>
+            <div class="rainbow"></div>
+            <div class="rainbow"></div>
+            <div class="rainbow"></div>
+            <div class="rainbow"></div>
+            <div class="rainbow"></div>
+            <div class="rainbow"></div>
+            <div class="rainbow"></div>
+            <div class="rainbow"></div>
+            <div class="rainbow"></div>
+            <div class="rainbow"></div>
+            <div class="rainbow"></div>
+            <div class="rainbow"></div>
+            <div class="rainbow"></div>
+            <div class="rainbow"></div>
+            <div class="rainbow"></div>
+            <div class="rainbow"></div>
+            <div class="rainbow"></div>
+            <div class="rainbow"></div>
+            <div class="rainbow"></div>
+            <div class="rainbow"></div>
+            <div class="rainbow"></div>
+            <div class="rainbow"></div>
+            <div class="rainbow"></div>
+            <div class="rainbow"></div>
+            <div class="h"></div>
+            <div class="v"></div>
+        </div>
 
         <div id="app"></div>
     </body>

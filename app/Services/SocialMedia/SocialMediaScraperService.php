@@ -35,9 +35,14 @@ final class SocialMediaScraperService
     public function scrapeFollowerCount(string $url, string $platform): ?int
     {
         try {
+            Log::info('Starting social media scraping', [
+                'url' => $url,
+                'platform' => $platform,
+            ]);
+
             $crawler = $this->browser->request('GET', $url);
 
-            return match (strtolower($platform)) {
+            $result = match (strtolower($platform)) {
                 'instagram' => $this->extractInstagramFollowers($crawler, $url),
                 'facebook' => $this->extractFacebookFollowers($crawler, $url),
                 'tiktok' => $this->extractTikTokFollowers($crawler, $url),
@@ -46,11 +51,20 @@ final class SocialMediaScraperService
                 'youtube' => $this->extractYouTubeFollowers($crawler, $url),
                 default => null,
             };
+
+            Log::info('Social media scraping completed', [
+                'url' => $url,
+                'platform' => $platform,
+                'followers' => $result,
+            ]);
+
+            return $result;
         } catch (\Exception $e) {
-            Log::warning('Failed to scrape social media follower count', [
+            Log::error('Failed to scrape social media follower count', [
                 'url' => $url,
                 'platform' => $platform,
                 'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
             ]);
             return null;
         }
@@ -83,11 +97,20 @@ final class SocialMediaScraperService
     private function extractInstagramFollowers(Crawler $crawler, string $url): ?int
     {
         try {
+            Log::info('Extracting Instagram followers', ['url' => $url]);
+
             // Try to extract from meta tags (og:description often contains follower count)
             $metaDescription = $crawler->filter('meta[property="og:description"]')->first();
             if ($metaDescription->count() > 0) {
                 $description = $metaDescription->attr('content');
-                if (preg_match('/(\d[\d,\.]*)\s*(M|K|Followers|followers)/i', $description, $matches)) {
+                Log::info('Instagram meta description found', ['description' => $description]);
+
+                if (preg_match('/(\d+(?:[,\.]\d+)*)\s*(M|K|Followers|followers)/i', $description, $matches)) {
+                    Log::info('Instagram meta regex matched', [
+                        'full_match' => $matches[0],
+                        'count' => $matches[1],
+                        'suffix' => $matches[2] ?? '',
+                    ]);
                     return $this->parseFollowerCount($matches[1], $matches[2] ?? '');
                 }
             }
@@ -97,17 +120,24 @@ final class SocialMediaScraperService
 
             // Pattern for Instagram's JSON data
             if (preg_match('/"edge_followed_by":\{"count":(\d+)\}/', $htmlContent, $matches)) {
+                Log::info('Instagram JSON data matched', ['count' => $matches[1]]);
                 return (int) $matches[1];
             }
 
             // Try alternative patterns
-            if (preg_match('/(\d[\d,\.]+)\s*followers?/i', $htmlContent, $matches)) {
-                return $this->parseFollowerCount($matches[1], '');
+            if (preg_match('/(\d+(?:[,\.]\d+)*)\s*(M|K|followers?)/i', $htmlContent, $matches)) {
+                Log::info('Instagram content regex matched', [
+                    'full_match' => $matches[0],
+                    'count' => $matches[1],
+                    'suffix' => $matches[2] ?? '',
+                ]);
+                return $this->parseFollowerCount($matches[1], $matches[2] ?? '');
             }
 
+            Log::warning('Instagram followers not found in page', ['url' => $url]);
             return null;
         } catch (\Exception $e) {
-            Log::debug('Instagram scraping failed', ['url' => $url, 'error' => $e->getMessage()]);
+            Log::error('Instagram scraping failed', ['url' => $url, 'error' => $e->getMessage()]);
             return null;
         }
     }
@@ -117,23 +147,38 @@ final class SocialMediaScraperService
         try {
             $htmlContent = $crawler->html();
 
+            Log::info('Extracting Facebook followers', ['url' => $url]);
+
             // Try to find follower count in meta tags
             $metaDescription = $crawler->filter('meta[property="og:description"]')->first();
             if ($metaDescription->count() > 0) {
                 $description = $metaDescription->attr('content');
-                if (preg_match('/(\d[\d,\.]*)\s*(M|K|followers?|likes?)/i', $description, $matches)) {
+                Log::info('Facebook meta description found', ['description' => $description]);
+
+                if (preg_match('/(\d+(?:[,\.]\d+)*)\s*(M|K|B|followers?|likes?)/i', $description, $matches)) {
+                    Log::info('Facebook meta regex matched', [
+                        'full_match' => $matches[0],
+                        'count' => $matches[1],
+                        'suffix' => $matches[2] ?? '',
+                    ]);
                     return $this->parseFollowerCount($matches[1], $matches[2] ?? '');
                 }
             }
 
             // Try to find in page content
-            if (preg_match('/(\d[\d,\.]+)\s*(followers?|likes?|people like this)/i', $htmlContent, $matches)) {
+            if (preg_match('/(\d+(?:[,\.]\d+)*)\s*(M|K|B|followers?|likes?|people like this)/i', $htmlContent, $matches)) {
+                Log::info('Facebook content regex matched', [
+                    'full_match' => $matches[0],
+                    'count' => $matches[1],
+                    'suffix' => $matches[2] ?? '',
+                ]);
                 return $this->parseFollowerCount($matches[1], $matches[2] ?? '');
             }
 
+            Log::warning('Facebook followers not found in page', ['url' => $url]);
             return null;
         } catch (\Exception $e) {
-            Log::debug('Facebook scraping failed', ['url' => $url, 'error' => $e->getMessage()]);
+            Log::error('Facebook scraping failed', ['url' => $url, 'error' => $e->getMessage()]);
             return null;
         }
     }
@@ -148,13 +193,13 @@ final class SocialMediaScraperService
                 return (int) $matches[1];
             }
 
-            if (preg_match('/(\d[\d,\.]*)\s*(M|K)?\s*Followers?/i', $htmlContent, $matches)) {
+            if (preg_match('/(\d+(?:[,\.]\d+)*)\s*(M|K|B)?\s*Followers?/i', $htmlContent, $matches)) {
                 return $this->parseFollowerCount($matches[1], $matches[2] ?? '');
             }
 
             return null;
         } catch (\Exception $e) {
-            Log::debug('TikTok scraping failed', ['url' => $url, 'error' => $e->getMessage()]);
+            Log::error('TikTok scraping failed', ['url' => $url, 'error' => $e->getMessage()]);
             return null;
         }
     }
@@ -169,13 +214,13 @@ final class SocialMediaScraperService
                 return (int) $matches[1];
             }
 
-            if (preg_match('/(\d[\d,\.]*)\s*(M|K)?\s*Followers?/i', $htmlContent, $matches)) {
+            if (preg_match('/(\d+(?:[,\.]\d+)*)\s*(M|K|B)?\s*Followers?/i', $htmlContent, $matches)) {
                 return $this->parseFollowerCount($matches[1], $matches[2] ?? '');
             }
 
             return null;
         } catch (\Exception $e) {
-            Log::debug('Twitter scraping failed', ['url' => $url, 'error' => $e->getMessage()]);
+            Log::error('Twitter scraping failed', ['url' => $url, 'error' => $e->getMessage()]);
             return null;
         }
     }
@@ -185,13 +230,13 @@ final class SocialMediaScraperService
         try {
             $htmlContent = $crawler->html();
 
-            if (preg_match('/(\d[\d,\.]*)\s*(M|K)?\s*followers?/i', $htmlContent, $matches)) {
+            if (preg_match('/(\d+(?:[,\.]\d+)*)\s*(M|K|B)?\s*followers?/i', $htmlContent, $matches)) {
                 return $this->parseFollowerCount($matches[1], $matches[2] ?? '');
             }
 
             return null;
         } catch (\Exception $e) {
-            Log::debug('LinkedIn scraping failed', ['url' => $url, 'error' => $e->getMessage()]);
+            Log::error('LinkedIn scraping failed', ['url' => $url, 'error' => $e->getMessage()]);
             return null;
         }
     }
@@ -202,17 +247,17 @@ final class SocialMediaScraperService
             $htmlContent = $crawler->html();
 
             // YouTube subscriber count
-            if (preg_match('/"subscriberCountText":\{"simpleText":"([\d,\.]+[MK]?)\s*subscribers?"/i', $htmlContent, $matches)) {
-                return $this->parseFollowerCount($matches[1], '');
+            if (preg_match('/"subscriberCountText":\{"simpleText":"(\d+(?:[,\.]\d+)*)\s*([MKB])?\s*subscribers?"/i', $htmlContent, $matches)) {
+                return $this->parseFollowerCount($matches[1], $matches[2] ?? '');
             }
 
-            if (preg_match('/(\d[\d,\.]*)\s*(M|K)?\s*subscribers?/i', $htmlContent, $matches)) {
+            if (preg_match('/(\d+(?:[,\.]\d+)*)\s*(M|K|B)?\s*subscribers?/i', $htmlContent, $matches)) {
                 return $this->parseFollowerCount($matches[1], $matches[2] ?? '');
             }
 
             return null;
         } catch (\Exception $e) {
-            Log::debug('YouTube scraping failed', ['url' => $url, 'error' => $e->getMessage()]);
+            Log::error('YouTube scraping failed', ['url' => $url, 'error' => $e->getMessage()]);
             return null;
         }
     }
@@ -222,23 +267,62 @@ final class SocialMediaScraperService
      */
     private function parseFollowerCount(string $count, string $suffix = ''): int
     {
-        // Remove commas and spaces
-        $count = str_replace([',', ' ', '.'], '', $count);
+        $originalCount = $count;
+        $originalSuffix = $suffix;
 
-        // Check if suffix contains K or M
+        // Check if suffix contains K, M, or B
         $multiplier = 1;
+        $hasSuffix = false;
 
         if (stripos($count, 'M') !== false || stripos($suffix, 'M') !== false) {
             $multiplier = 1000000;
             $count = str_replace(['M', 'm'], '', $count);
+            $hasSuffix = true;
         } elseif (stripos($count, 'K') !== false || stripos($suffix, 'K') !== false) {
             $multiplier = 1000;
             $count = str_replace(['K', 'k'], '', $count);
+            $hasSuffix = true;
+        } elseif (stripos($count, 'B') !== false || stripos($suffix, 'B') !== false) {
+            $multiplier = 1000000000;
+            $count = str_replace(['B', 'b'], '', $count);
+            $hasSuffix = true;
+        }
+
+        // Clean the number
+        // Remove spaces
+        $count = str_replace(' ', '', $count);
+
+        // If there's a suffix (K, M, B), treat dots and commas as decimal separators
+        // Example: "1.5M" = 1.5 million, "2,5K" = 2.5 thousand
+        if ($hasSuffix) {
+            // Replace comma with dot for decimal (European format)
+            $count = str_replace(',', '.', $count);
+            // Keep only the last dot (in case of multiple)
+            $parts = explode('.', $count);
+            if (count($parts) > 1) {
+                $last = array_pop($parts);
+                $count = implode('', $parts) . '.' . $last;
+            }
+        } else {
+            // No suffix: dots and commas are thousand separators, remove them
+            // Example: "150,000" = 150000, "150.000" = 150000
+            $count = str_replace([',', '.'], '', $count);
         }
 
         // Convert to float first (in case of decimals like "1.5M")
         $value = floatval($count);
+        $result = (int) ($value * $multiplier);
 
-        return (int) ($value * $multiplier);
+        Log::info('Parsing follower count', [
+            'original_count' => $originalCount,
+            'original_suffix' => $originalSuffix,
+            'has_suffix' => $hasSuffix,
+            'multiplier' => $multiplier,
+            'cleaned_count' => $count,
+            'float_value' => $value,
+            'final_result' => $result,
+        ]);
+
+        return $result;
     }
 }

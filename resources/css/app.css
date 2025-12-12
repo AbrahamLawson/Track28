@@ -8,20 +8,50 @@
 @theme {
     --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
+}
 
-    /* Custom Color Palette */
-    --color-dark: #0E0E10;
-    --color-steel-dark: #35444D;
-    --color-steel-medium: #507B91;
-    --color-steel-light: #9CAEB3;
-    --color-glow: #EEFAFA;
+/* ============================================
+   🎨 THEME CONFIGURATION - Changez les couleurs ici !
+   ============================================ */
+:root {
+    /* Couleurs principales du background */
+    --bg-main: #FAF7F2;              /* Beige très clair - Fond principal */
+    --bg-card: #FFFFFF;              /* Blanc pur - Cartes */
+    --bg-card-hover: #F5F1E8;        /* Beige très clair - Hover cartes */
 
-    /* Tailwind Custom Colors */
-    --color-primary: #507B91;
-    --color-secondary: #35444D;
-    --color-background: #0E0E10;
-    --color-accent: #EEFAFA;
-    --color-neutral: #9CAEB3;
+    /* Couleurs de texte */
+    --text-primary: #1F2937;         /* Gris très foncé - Titres principaux */
+    --text-secondary: #4B5563;       /* Gris moyen - Textes secondaires */
+    --text-muted: #6B7280;           /* Gris clair - Textes atténués */
+
+    /* Couleurs d'accentuation */
+    --accent-primary: #3B82F6;       /* Bleu - Boutons principaux */
+    --accent-primary-hover: #2563EB; /* Bleu foncé - Hover boutons */
+    --accent-secondary: #507B91;     /* Bleu-gris - Accents secondaires */
+
+    /* Bordures */
+    --border-light: #E5E7EB;         /* Gris très clair - Bordures */
+    --border-medium: #D1D5DB;        /* Gris clair - Bordures accentuées */
+
+    /* États (Success, Warning, Error) */
+    --success-bg: #ECFDF5;           /* Vert clair - Fond succès */
+    --success-border: #A7F3D0;       /* Vert - Bordure succès */
+    --success-text: #065F46;         /* Vert foncé - Texte succès */
+
+    --error-bg: #FEF2F2;             /* Rouge clair - Fond erreur */
+    --error-border: #FECACA;         /* Rouge - Bordure erreur */
+    --error-text: #991B1B;           /* Rouge foncé - Texte erreur */
+
+    --info-bg: #EFF6FF;              /* Bleu clair - Fond info */
+    --info-border: #BFDBFE;          /* Bleu - Bordure info */
+    --info-text: #1E40AF;            /* Bleu foncé - Texte info */
+
+    --warning-bg: #FFFBEB;           /* Jaune clair - Fond warning */
+    --warning-border: #FDE68A;       /* Jaune - Bordure warning */
+    --warning-text: #92400E;         /* Jaune foncé - Texte warning */
+
+    /* Rainbow animation background blend */
+    --rainbow-blend: #FAF7F2;        /* Même couleur que bg-main pour les dégradés */
 }
 
 /* Rainbow Animation Background */
@@ -33,7 +63,7 @@ html, body {
 
 .cyber-background {
     position: relative;
-    background: white;
+    background: var(--bg-main);
     overflow: hidden;
     width: 100%;
 }
@@ -49,201 +79,201 @@ html, body {
 
 /* Rainbow stripe 1 */
 .rainbow:nth-child(1) {
-    box-shadow: -130px 0 80px 40px white, -50px 0 50px 25px rgb(232 121 249),
+    box-shadow: -130px 0 80px 40px var(--rainbow-blend), -50px 0 50px 25px rgb(232 121 249),
         0 0 50px 25px rgb(96 165 250), 50px 0 50px 25px rgb(94 234 212),
-        130px 0 80px 40px white;
+        130px 0 80px 40px var(--rainbow-blend);
     animation: 44.1s linear infinite slide;
     animation-delay: -1.8s;
 }
 
 .rainbow:nth-child(2) {
-    box-shadow: -130px 0 80px 40px white, -50px 0 50px 25px rgb(94 234 212),
+    box-shadow: -130px 0 80px 40px var(--rainbow-blend), -50px 0 50px 25px rgb(94 234 212),
         0 0 50px 25px rgb(232 121 249), 50px 0 50px 25px rgb(96 165 250),
-        130px 0 80px 40px white;
+        130px 0 80px 40px var(--rainbow-blend);
     animation: 43.2s linear infinite slide;
     animation-delay: -3.6s;
 }
 
 .rainbow:nth-child(3) {
-    box-shadow: -130px 0 80px 40px white, -50px 0 50px 25px rgb(96 165 250),
+    box-shadow: -130px 0 80px 40px var(--rainbow-blend), -50px 0 50px 25px rgb(96 165 250),
         0 0 50px 25px rgb(94 234 212), 50px 0 50px 25px rgb(232 121 249),
-        130px 0 80px 40px white;
+        130px 0 80px 40px var(--rainbow-blend);
     animation: 42.3s linear infinite slide;
     animation-delay: -5.4s;
 }
 
 .rainbow:nth-child(4) {
-    box-shadow: -130px 0 80px 40px white, -50px 0 50px 25px rgb(232 121 249),
+    box-shadow: -130px 0 80px 40px var(--rainbow-blend), -50px 0 50px 25px rgb(232 121 249),
         0 0 50px 25px rgb(94 234 212), 50px 0 50px 25px rgb(96 165 250),
-        130px 0 80px 40px white;
+        130px 0 80px 40px var(--rainbow-blend);
     animation: 41.4s linear infinite slide;
     animation-delay: -7.2s;
 }
 
 .rainbow:nth-child(5) {
-    box-shadow: -130px 0 80px 40px white, -50px 0 50px 25px rgb(94 234 212),
+    box-shadow: -130px 0 80px 40px var(--rainbow-blend), -50px 0 50px 25px rgb(94 234 212),
         0 0 50px 25px rgb(96 165 250), 50px 0 50px 25px rgb(232 121 249),
-        130px 0 80px 40px white;
+        130px 0 80px 40px var(--rainbow-blend);
     animation: 40.5s linear infinite slide;
     animation-delay: -9s;
 }
 
 .rainbow:nth-child(6) {
-    box-shadow: -130px 0 80px 40px white, -50px 0 50px 25px rgb(96 165 250),
+    box-shadow: -130px 0 80px 40px var(--rainbow-blend), -50px 0 50px 25px rgb(96 165 250),
         0 0 50px 25px rgb(232 121 249), 50px 0 50px 25px rgb(94 234 212),
-        130px 0 80px 40px white;
+        130px 0 80px 40px var(--rainbow-blend);
     animation: 39.6s linear infinite slide;
     animation-delay: -10.8s;
 }
 
 .rainbow:nth-child(7) {
-    box-shadow: -130px 0 80px 40px white, -50px 0 50px 25px rgb(232 121 249),
+    box-shadow: -130px 0 80px 40px var(--rainbow-blend), -50px 0 50px 25px rgb(232 121 249),
         0 0 50px 25px rgb(96 165 250), 50px 0 50px 25px rgb(94 234 212),
-        130px 0 80px 40px white;
+        130px 0 80px 40px var(--rainbow-blend);
     animation: 38.7s linear infinite slide;
     animation-delay: -12.6s;
 }
 
 .rainbow:nth-child(8) {
-    box-shadow: -130px 0 80px 40px white, -50px 0 50px 25px rgb(94 234 212),
+    box-shadow: -130px 0 80px 40px var(--rainbow-blend), -50px 0 50px 25px rgb(94 234 212),
         0 0 50px 25px rgb(232 121 249), 50px 0 50px 25px rgb(96 165 250),
-        130px 0 80px 40px white;
+        130px 0 80px 40px var(--rainbow-blend);
     animation: 37.8s linear infinite slide;
     animation-delay: -14.4s;
 }
 
 .rainbow:nth-child(9) {
-    box-shadow: -130px 0 80px 40px white, -50px 0 50px 25px rgb(96 165 250),
+    box-shadow: -130px 0 80px 40px var(--rainbow-blend), -50px 0 50px 25px rgb(96 165 250),
         0 0 50px 25px rgb(94 234 212), 50px 0 50px 25px rgb(232 121 249),
-        130px 0 80px 40px white;
+        130px 0 80px 40px var(--rainbow-blend);
     animation: 36.9s linear infinite slide;
     animation-delay: -16.2s;
 }
 
 .rainbow:nth-child(10) {
-    box-shadow: -130px 0 80px 40px white, -50px 0 50px 25px rgb(232 121 249),
+    box-shadow: -130px 0 80px 40px var(--rainbow-blend), -50px 0 50px 25px rgb(232 121 249),
         0 0 50px 25px rgb(94 234 212), 50px 0 50px 25px rgb(96 165 250),
-        130px 0 80px 40px white;
+        130px 0 80px 40px var(--rainbow-blend);
     animation: 36s linear infinite slide;
     animation-delay: -18s;
 }
 
 .rainbow:nth-child(11) {
-    box-shadow: -130px 0 80px 40px white, -50px 0 50px 25px rgb(94 234 212),
+    box-shadow: -130px 0 80px 40px var(--rainbow-blend), -50px 0 50px 25px rgb(94 234 212),
         0 0 50px 25px rgb(96 165 250), 50px 0 50px 25px rgb(232 121 249),
-        130px 0 80px 40px white;
+        130px 0 80px 40px var(--rainbow-blend);
     animation: 35.1s linear infinite slide;
     animation-delay: -19.8s;
 }
 
 .rainbow:nth-child(12) {
-    box-shadow: -130px 0 80px 40px white, -50px 0 50px 25px rgb(96 165 250),
+    box-shadow: -130px 0 80px 40px var(--rainbow-blend), -50px 0 50px 25px rgb(96 165 250),
         0 0 50px 25px rgb(232 121 249), 50px 0 50px 25px rgb(94 234 212),
-        130px 0 80px 40px white;
+        130px 0 80px 40px var(--rainbow-blend);
     animation: 34.2s linear infinite slide;
     animation-delay: -21.6s;
 }
 
 .rainbow:nth-child(13) {
-    box-shadow: -130px 0 80px 40px white, -50px 0 50px 25px rgb(232 121 249),
+    box-shadow: -130px 0 80px 40px var(--rainbow-blend), -50px 0 50px 25px rgb(232 121 249),
         0 0 50px 25px rgb(96 165 250), 50px 0 50px 25px rgb(94 234 212),
-        130px 0 80px 40px white;
+        130px 0 80px 40px var(--rainbow-blend);
     animation: 33.3s linear infinite slide;
     animation-delay: -23.4s;
 }
 
 .rainbow:nth-child(14) {
-    box-shadow: -130px 0 80px 40px white, -50px 0 50px 25px rgb(94 234 212),
+    box-shadow: -130px 0 80px 40px var(--rainbow-blend), -50px 0 50px 25px rgb(94 234 212),
         0 0 50px 25px rgb(232 121 249), 50px 0 50px 25px rgb(96 165 250),
-        130px 0 80px 40px white;
+        130px 0 80px 40px var(--rainbow-blend);
     animation: 32.4s linear infinite slide;
     animation-delay: -25.2s;
 }
 
 .rainbow:nth-child(15) {
-    box-shadow: -130px 0 80px 40px white, -50px 0 50px 25px rgb(96 165 250),
+    box-shadow: -130px 0 80px 40px var(--rainbow-blend), -50px 0 50px 25px rgb(96 165 250),
         0 0 50px 25px rgb(94 234 212), 50px 0 50px 25px rgb(232 121 249),
-        130px 0 80px 40px white;
+        130px 0 80px 40px var(--rainbow-blend);
     animation: 31.5s linear infinite slide;
     animation-delay: -27s;
 }
 
 .rainbow:nth-child(16) {
-    box-shadow: -130px 0 80px 40px white, -50px 0 50px 25px rgb(232 121 249),
+    box-shadow: -130px 0 80px 40px var(--rainbow-blend), -50px 0 50px 25px rgb(232 121 249),
         0 0 50px 25px rgb(94 234 212), 50px 0 50px 25px rgb(96 165 250),
-        130px 0 80px 40px white;
+        130px 0 80px 40px var(--rainbow-blend);
     animation: 30.6s linear infinite slide;
     animation-delay: -28.8s;
 }
 
 .rainbow:nth-child(17) {
-    box-shadow: -130px 0 80px 40px white, -50px 0 50px 25px rgb(94 234 212),
+    box-shadow: -130px 0 80px 40px var(--rainbow-blend), -50px 0 50px 25px rgb(94 234 212),
         0 0 50px 25px rgb(96 165 250), 50px 0 50px 25px rgb(232 121 249),
-        130px 0 80px 40px white;
+        130px 0 80px 40px var(--rainbow-blend);
     animation: 29.7s linear infinite slide;
     animation-delay: -30.6s;
 }
 
 .rainbow:nth-child(18) {
-    box-shadow: -130px 0 80px 40px white, -50px 0 50px 25px rgb(96 165 250),
+    box-shadow: -130px 0 80px 40px var(--rainbow-blend), -50px 0 50px 25px rgb(96 165 250),
         0 0 50px 25px rgb(232 121 249), 50px 0 50px 25px rgb(94 234 212),
-        130px 0 80px 40px white;
+        130px 0 80px 40px var(--rainbow-blend);
     animation: 28.8s linear infinite slide;
     animation-delay: -32.4s;
 }
 
 .rainbow:nth-child(19) {
-    box-shadow: -130px 0 80px 40px white, -50px 0 50px 25px rgb(232 121 249),
+    box-shadow: -130px 0 80px 40px var(--rainbow-blend), -50px 0 50px 25px rgb(232 121 249),
         0 0 50px 25px rgb(96 165 250), 50px 0 50px 25px rgb(94 234 212),
-        130px 0 80px 40px white;
+        130px 0 80px 40px var(--rainbow-blend);
     animation: 27.9s linear infinite slide;
     animation-delay: -34.2s;
 }
 
 .rainbow:nth-child(20) {
-    box-shadow: -130px 0 80px 40px white, -50px 0 50px 25px rgb(94 234 212),
+    box-shadow: -130px 0 80px 40px var(--rainbow-blend), -50px 0 50px 25px rgb(94 234 212),
         0 0 50px 25px rgb(232 121 249), 50px 0 50px 25px rgb(96 165 250),
-        130px 0 80px 40px white;
+        130px 0 80px 40px var(--rainbow-blend);
     animation: 27s linear infinite slide;
     animation-delay: -36s;
 }
 
 .rainbow:nth-child(21) {
-    box-shadow: -130px 0 80px 40px white, -50px 0 50px 25px rgb(96 165 250),
+    box-shadow: -130px 0 80px 40px var(--rainbow-blend), -50px 0 50px 25px rgb(96 165 250),
         0 0 50px 25px rgb(94 234 212), 50px 0 50px 25px rgb(232 121 249),
-        130px 0 80px 40px white;
+        130px 0 80px 40px var(--rainbow-blend);
     animation: 26.1s linear infinite slide;
     animation-delay: -37.8s;
 }
 
 .rainbow:nth-child(22) {
-    box-shadow: -130px 0 80px 40px white, -50px 0 50px 25px rgb(232 121 249),
+    box-shadow: -130px 0 80px 40px var(--rainbow-blend), -50px 0 50px 25px rgb(232 121 249),
         0 0 50px 25px rgb(94 234 212), 50px 0 50px 25px rgb(96 165 250),
-        130px 0 80px 40px white;
+        130px 0 80px 40px var(--rainbow-blend);
     animation: 25.2s linear infinite slide;
     animation-delay: -39.6s;
 }
 
 .rainbow:nth-child(23) {
-    box-shadow: -130px 0 80px 40px white, -50px 0 50px 25px rgb(94 234 212),
+    box-shadow: -130px 0 80px 40px var(--rainbow-blend), -50px 0 50px 25px rgb(94 234 212),
         0 0 50px 25px rgb(96 165 250), 50px 0 50px 25px rgb(232 121 249),
-        130px 0 80px 40px white;
+        130px 0 80px 40px var(--rainbow-blend);
     animation: 24.3s linear infinite slide;
     animation-delay: -41.4s;
 }
 
 .rainbow:nth-child(24) {
-    box-shadow: -130px 0 80px 40px white, -50px 0 50px 25px rgb(96 165 250),
+    box-shadow: -130px 0 80px 40px var(--rainbow-blend), -50px 0 50px 25px rgb(96 165 250),
         0 0 50px 25px rgb(232 121 249), 50px 0 50px 25px rgb(94 234 212),
-        130px 0 80px 40px white;
+        130px 0 80px 40px var(--rainbow-blend);
     animation: 23.4s linear infinite slide;
     animation-delay: -43.2s;
 }
 
 .rainbow:nth-child(25) {
-    box-shadow: -130px 0 80px 40px white, -50px 0 50px 25px rgb(232 121 249),
+    box-shadow: -130px 0 80px 40px var(--rainbow-blend), -50px 0 50px 25px rgb(232 121 249),
         0 0 50px 25px rgb(96 165 250), 50px 0 50px 25px rgb(94 234 212),
-        130px 0 80px 40px white;
+        130px 0 80px 40px var(--rainbow-blend);
     animation: 22.5s linear infinite slide;
     animation-delay: -45s;
 }
@@ -258,7 +288,7 @@ html, body {
 }
 
 .h {
-    box-shadow: 0 0 50vh 40vh white;
+    box-shadow: 0 0 50vh 40vh var(--rainbow-blend);
     width: 100vw;
     height: 0;
     bottom: 0;
@@ -268,7 +298,7 @@ html, body {
 }
 
 .v {
-    box-shadow: 0 0 35vw 25vw white;
+    box-shadow: 0 0 35vw 25vw var(--rainbow-blend);
     width: 0;
     height: 100vh;
     bottom: 0;
@@ -280,4 +310,13 @@ html, body {
 #app {
     position: relative;
     z-index: 10;
+}
+
+#rainbow-container {
+    transition: opacity 0.6s ease-out;
+}
+
+#rainbow-container.hide-rainbows {
+    opacity: 0;
+    pointer-events: none;
 }
