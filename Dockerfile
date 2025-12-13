@@ -1,49 +1,75 @@
-# Utiliser PHP 8.4 avec FPM
+# ===========================
+# Stage 1: Build Frontend Assets
+# ===========================
+FROM node:20-alpine AS frontend-builder
+
+WORKDIR /app
+
+# Copier les fichiers de dépendances Node
+COPY package.json package-lock.json ./
+
+# Installer les dépendances NPM
+RUN npm ci --production=false
+
+# Copier les fichiers source
+COPY resources ./resources
+COPY public ./public
+COPY vite.config.js tailwind.config.js postcss.config.js ./
+
+# Build des assets avec Vite
+RUN npm run build
+
+# ===========================
+# Stage 2: Build PHP Dependencies
+# ===========================
+FROM composer:latest AS composer-builder
+
+WORKDIR /app
+
+# Copier les fichiers de dépendances Composer
+COPY composer.json composer.lock ./
+
+# Installer les dépendances PHP (sans dev pour la production)
+RUN composer install --no-dev --no-scripts --no-autoloader --prefer-dist --optimize-autoloader
+
+# Copier tout le code pour générer l'autoloader
+COPY . .
+
+# Générer l'autoloader optimisé
+RUN composer dump-autoload --optimize --classmap-authoritative
+
+# ===========================
+# Stage 3: Final Production Image
+# ===========================
 FROM php:8.4-fpm
 
-# Installer les dépendances système
+# Installer les dépendances système minimales
 RUN apt-get update && apt-get install -y \
-    git \
-    curl \
     libpng-dev \
     libonig-dev \
     libxml2-dev \
-    zip \
-    unzip \
     nginx \
     supervisor \
-    nodejs \
-    npm
-
-# Nettoyer le cache
-RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 # Installer les extensions PHP
 RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
 
-# Installer Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+# Configurer PHP pour la production
+RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 
 # Définir le répertoire de travail
 WORKDIR /var/www
 
-# Copier les fichiers de dépendances
-COPY composer.json composer.lock package.json package-lock.json ./
-
-# Installer les dépendances PHP (sans dev pour la production)
-RUN composer install --no-dev --no-scripts --no-autoloader --prefer-dist
-
-# Installer les dépendances NPM
-RUN npm ci
-
-# Copier tout le code de l'application
+# Copier le code de l'application
 COPY . .
 
-# Générer l'autoloader optimisé
-RUN composer dump-autoload --optimize
+# Copier les dépendances PHP depuis le stage builder
+COPY --from=composer-builder /app/vendor ./vendor
 
-# Build des assets avec Vite
-RUN npm run build
+# Copier les assets buildés depuis le stage frontend
+COPY --from=frontend-builder /app/public/build ./public/build
 
 # Créer le dossier pour Let's Encrypt
 RUN mkdir -p /var/www/public/.well-known/acme-challenge \

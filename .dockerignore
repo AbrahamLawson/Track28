@@ -52,3 +52,10 @@ CLAUDE.md
 
 # Test files
 test-scraper.php
+
+# Docker
+docker-compose.yml
+Dockerfile
+
+# Logo temp directory
+/logo
