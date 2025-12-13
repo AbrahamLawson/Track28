@@ -141,12 +141,7 @@
                         class="inline-flex items-center gap-2 px-2 sm:px-3 py-2 bg-white rounded-lg border border-indigo-300 hover:bg-indigo-100 transition-colors text-xs sm:text-sm"
                     >
                         <span class="text-base sm:text-lg">{{ getSocialMediaEmoji(social.platform) }}</span>
-                        <div class="flex flex-col flex-1">
-                            <span class="font-medium text-indigo-900 text-xs sm:text-sm">{{ social.platform }}</span>
-                            <span v-if="social.followers" class="text-xs text-indigo-600">
-                                {{ formatFollowers(social.followers) }} abonnés
-                            </span>
-                        </div>
+                        <span class="font-medium text-indigo-900 text-xs sm:text-sm flex-1">{{ social.platform }}</span>
                         <svg
                             class="w-3 h-3 text-indigo-600"
                             fill="none"
@@ -212,15 +207,6 @@ const {
 
 const formatPrice = (price) => {
     return parseFloat(price).toFixed(2);
-};
-
-const formatFollowers = (count) => {
-    if (count >= 1000000) {
-        return `${(count / 1000000).toFixed(1)}M`;
-    } else if (count >= 1000) {
-        return `${(count / 1000).toFixed(1)}K`;
-    }
-    return count.toString();
 };
 
 const getSocialMediaEmoji = (platform) => {
