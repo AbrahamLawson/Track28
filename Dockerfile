@@ -14,7 +14,7 @@ RUN npm ci --production=false
 # Copier les fichiers source
 COPY resources ./resources
 COPY public ./public
-COPY vite.config.js tailwind.config.js postcss.config.js ./
+COPY vite.config.js tailwind.config.js ./
 
 # Build des assets avec Vite
 RUN npm run build
