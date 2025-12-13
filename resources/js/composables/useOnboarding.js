@@ -46,7 +46,7 @@ export function useOnboarding() {
             showButtons: ['next', 'previous', 'close'],
             nextBtnText: mobile ? 'Suivant' : 'Suivant →',
             prevBtnText: mobile ? 'Retour' : '← Précédent',
-            doneBtnText: mobile ? 'OK' : 'Terminer ✓',
+            doneBtnText: mobile ? 'S\'inscrire' : 'S\'inscrire à la newsletter ✓',
             closeBtnText: 'Passer',
             progressText: '{{current}}/{{total}}',
             popoverClass: mobile ? 'driver-popover-mobile' : 'driver-popover-desktop',
@@ -87,15 +87,24 @@ export function useOnboarding() {
                 },
                 {
                     popover: {
-                        title: '🎉 C\'est parti !',
-                        description: 'Vous êtes prêt à découvrir vos concurrents ! Essayez maintenant avec l\'URL d\'un de vos produits ou de votre boutique.',
+                        title: '🎉 Dernière étape !',
+                        description: 'Pour débloquer votre accès à Track28, inscrivez-vous à notre newsletter pour suivre notre aventure !',
                         side: 'top',
                         align: 'center'
                     }
                 }
             ],
             onDestroyStarted: () => {
-                // Marquer comme complété quand l'utilisateur ferme le tour
+                // Si on est au dernier step et que l'utilisateur clique sur le bouton "Done"
+                const currentStep = driverObj.getActiveIndex();
+                if (currentStep === 4) { // Dernier step (index 4)
+                    // Ouvrir le formulaire MailerLite
+                    if (typeof ml !== 'undefined') {
+                        ml('show', '2EBhjO', true);
+                    }
+                }
+
+                // Marquer comme complété
                 markOnboardingComplete();
                 driverObj.destroy();
             },
@@ -109,22 +118,10 @@ export function useOnboarding() {
      */
     const startOnboardingIfNeeded = () => {
         if (!hasSeenOnboarding()) {
-            // Vérifier si la popup MailerLite a déjà été complétée
-            const mailerliteCompleted = localStorage.getItem('mailerlite_popup_completed') === 'true';
-
-            if (mailerliteCompleted) {
-                // Si MailerLite déjà complété, démarrer l'onboarding directement
-                setTimeout(() => {
-                    startOnboarding();
-                }, 800);
-            } else {
-                // Sinon, attendre l'événement de complétion de MailerLite
-                window.addEventListener('mailerlite-completed', () => {
-                    setTimeout(() => {
-                        startOnboarding();
-                    }, 1000); // 1 seconde après la fermeture de la popup
-                }, { once: true }); // N'écouter qu'une seule fois
-            }
+            // Démarrer l'onboarding après un court délai
+            setTimeout(() => {
+                startOnboarding();
+            }, 1500);
         }
     };
 
