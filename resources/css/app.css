@@ -320,3 +320,71 @@ html, body {
     opacity: 0;
     pointer-events: none;
 }
+
+/* ============================================
+   📱 RESPONSIVE ONBOARDING STYLES
+   ============================================ */
+
+/* Styles responsive pour Driver.js (onboarding) */
+.driver-popover-mobile {
+    max-width: 90vw !important;
+    font-size: 14px !important;
+}
+
+.driver-popover-mobile .driver-popover-title {
+    font-size: 16px !important;
+    padding: 12px !important;
+}
+
+.driver-popover-mobile .driver-popover-description {
+    font-size: 13px !important;
+    padding: 12px !important;
+    line-height: 1.5 !important;
+}
+
+.driver-popover-mobile .driver-popover-footer {
+    padding: 10px 12px !important;
+}
+
+.driver-popover-mobile button {
+    padding: 8px 12px !important;
+    font-size: 13px !important;
+}
+
+/* Desktop styles */
+.driver-popover-desktop {
+    max-width: 400px !important;
+}
+
+/* Media queries pour l'onboarding */
+@media (max-width: 767px) {
+    /* Mobile */
+    .driver-popover {
+        max-width: 90vw !important;
+        font-size: 14px !important;
+    }
+
+    .driver-popover-title {
+        font-size: 16px !important;
+    }
+
+    .driver-popover-description {
+        font-size: 13px !important;
+    }
+
+    .driver-popover-footer button {
+        padding: 8px 10px !important;
+        font-size: 12px !important;
+    }
+
+    .driver-popover-progress-text {
+        font-size: 11px !important;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+    /* Tablet */
+    .driver-popover {
+        max-width: 360px !important;
+    }
+}

@@ -23,46 +23,57 @@
         <!-- Background Brand Logos -->
         <BrandLogos />
 
-        <!-- Logo Track28 en haut à gauche -->
-        <div class="fixed top-6 left-6 z-20">
-            <img :src="logoUrl" alt="Track28 Logo" class="h-12" />
+        <!-- Logo Track28 en haut à gauche - Responsive -->
+        <div class="fixed top-3 left-3 sm:top-6 sm:left-6 z-20 flex items-center gap-2 sm:gap-4">
+            <img :src="logoUrl" alt="Track28 Logo" class="h-8 sm:h-10 md:h-12" />
+            <button
+                @click="startOnboarding"
+                class="flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-1.5 sm:py-2 bg-white/90 hover:bg-white rounded-full shadow-md hover:shadow-lg transition-all text-xs sm:text-sm font-medium text-indigo-600 hover:text-indigo-700 border border-indigo-200"
+                title="Revoir le guide"
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span class="hidden xs:inline sm:inline">Guide</span>
+            </button>
         </div>
 
-        <div class="max-w-4xl w-full mx-auto px-6 relative z-10">
-            <h1 class="text-4xl font-bold mb-3 text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 text-center">
+        <div class="max-w-4xl w-full mx-auto px-4 sm:px-6 relative z-10">
+            <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 sm:mb-3 text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 text-center mt-16 sm:mt-0">
                 Competitor Analysis Tool
             </h1>
-            <p class="text-gray-600 mb-10 text-center text-lg">Découvrez vos concurrents en quelques secondes</p>
+            <p class="text-gray-600 mb-6 sm:mb-10 text-center text-sm sm:text-base md:text-lg">Découvrez vos concurrents en quelques secondes</p>
 
-            <!-- Search Form -->
-            <div class="rounded-xl shadow-lg border border-gray-300 p-6 mb-8" style="background-color: #FAF7F2;">
+            <!-- Search Form - Responsive -->
+            <div class="rounded-xl shadow-lg border border-gray-300 p-4 sm:p-6 mb-6 sm:mb-8" style="background-color: #FAF7F2;">
                 <div class="mb-4">
-                    <label for="targetUrl" class="block text-sm font-medium text-gray-700 mb-2">
+                    <label for="targetUrl" class="block text-xs sm:text-sm font-medium text-gray-700 mb-2">
                         URL du produit ou de la boutique
                     </label>
                     <input
-                        id="targetUrl"
+                        id="search-input"
                         v-model="targetUrl"
                         type="url"
                         placeholder="https://example.com/product"
-                        class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-gray-900 placeholder-gray-400"
+                        class="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-gray-900 placeholder-gray-400"
                         :disabled="isLoading"
                         @keyup.enter="analyzeCompetitors"
                     />
                 </div>
 
-                <div class="flex gap-3">
+                <div class="flex flex-col sm:flex-row gap-2 sm:gap-3">
                     <button
+                        id="search-button"
                         @click="analyzeCompetitors"
                         :disabled="isLoading || !targetUrl"
-                        class="flex-1 bg-blue-600 text-white px-6 py-3 rounded-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-all hover:bg-blue-700"
+                        class="flex-1 bg-blue-600 text-white px-4 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base rounded-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-all hover:bg-blue-700"
                     >
                         {{ isLoading ? 'Analyse en cours...' : 'Analyser les concurrents' }}
                     </button>
                     <button
                         v-if="competitors.length > 0"
                         @click="resetAnalysis"
-                        class="px-6 py-3 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 cursor-pointer transition-all"
+                        class="px-4 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 cursor-pointer transition-all"
                     >
                         Réinitialiser
                     </button>
@@ -125,6 +136,7 @@
 import { watch, ref, onMounted } from 'vue';
 import { useCompetitorAnalysis } from '../composables/useCompetitorAnalysis';
 import { useLoadingMessages } from '../composables/useLoadingMessages';
+import { useOnboarding } from '../composables/useOnboarding';
 import CompetitorList from './CompetitorList.vue';
 import BrandLogos from './BrandLogos.vue';
 
@@ -144,7 +156,10 @@ const catGifs = catGifNames.map(name => `${window.location.origin}/images/logos/
 // GIF de chat sélectionné
 const randomCatGif = ref(catGifs[0]);
 
-// Précharger tous les GIFs au montage
+// Onboarding
+const { startOnboarding, startOnboardingIfNeeded } = useOnboarding();
+
+// Précharger tous les GIFs au montage et démarrer l'onboarding
 onMounted(() => {
     console.log('Préchargement des GIFs de chat...');
     catGifs.forEach(gifUrl => {
@@ -153,6 +168,9 @@ onMounted(() => {
         img.onload = () => console.log('GIF préchargé:', gifUrl);
         img.onerror = () => console.error('Erreur préchargement:', gifUrl);
     });
+
+    // Démarrer l'onboarding si l'utilisateur ne l'a pas encore vu
+    startOnboardingIfNeeded();
 });
 
 const {
